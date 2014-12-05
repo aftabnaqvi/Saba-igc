@@ -84,14 +84,16 @@ public class SabaApplication extends Application {
 		createDB();
 	}
 
+	@Override
+    public void onTerminate () {
+        super.onTerminate ();
+        ActiveAndroid.dispose ();
+    }
 	public static SabaClient getSabaClient() {
 		createDB();
 		return (SabaClient) SabaClient.getInstance(SabaApplication.context);
 	}
 	///Users/snaqvi/Documents/Android-Project-Test/Saba-igc/SanJose_IslamicCal_2009.txt
 	private static void createDB(){
-		
-
-		
 	}
 }

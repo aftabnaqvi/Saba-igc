@@ -68,13 +68,20 @@ public class PrayerTimesFragment extends SabaBaseFragment {
 		if(tvFajar != null)
 			tvFajar.setText(items.get(0).getFajar());
 		
-		tvSunrise.setText(items.get(0).getSunrise());
-		tvZohar.setText(items.get(0).getZohar());
-		tvSunset.setText(items.get(0).getSunset());
-		tvMaghrib.setText(items.get(0).getMaghrib());
-		tvMidnight.setText(items.get(0).getMidnight());
+		if(tvSunrise != null)
+			tvSunrise.setText(items.get(0).getSunrise());
 		
+		if(tvZohar != null)
+			tvZohar.setText(items.get(0).getZohar());
 		
+		if(tvSunset != null)
+			tvSunset.setText(items.get(0).getSunset());
+		
+		if(tvMaghrib != null)
+			tvMaghrib.setText(items.get(0).getMaghrib());
+		
+		if(tvMidnight != null)
+			tvMidnight.setText(items.get(0).getMidnight());
 		
 		System.out.println("records: " + items.size());
 		System.out.println("Date: " + items.get(0).getDate());

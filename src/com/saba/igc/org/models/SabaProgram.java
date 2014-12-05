@@ -40,6 +40,7 @@ public class SabaProgram extends Model{
 	@Column(name = "lastUpdate")
 	private String mLastUpdated;
 	
+	// lastRequestedTime, last 
 	@Column(name = "programName")
 	private String mProgramName;
 	
@@ -54,10 +55,23 @@ public class SabaProgram extends Model{
 		return mLastUpdated;
 	}
 
+	public String getProgramName() {
+		return mProgramName;
+	}
+
+	public void setProgramName(String programName) {
+		this.mProgramName = programName;
+	}
+
 	public String getTitle() {
 		return mTitle;
 	}
 
+	public void setTitle(String title) {
+		this.mTitle = title;
+	}
+
+	
 //	public Content getContents() {
 //		return mContent;
 //	}
@@ -67,11 +81,15 @@ public class SabaProgram extends Model{
 		return mContent;
 	}
 	
+	public void setContent(String content) {
+		this.mContent = content;
+	}
+	
 	public String toString(){
 		return "LastUpdated: " + mLastUpdated + "\nProgramName" + mProgramName + "\nTitle: " + mTitle + "\nContent: " + mContent.toString();
 	}
 	
-	public static SabaProgram fromJSON(JSONObject json){
+	public static SabaProgram fromProgramJSON(JSONObject json){
 		SabaProgram upcomingProgram = new SabaProgram();
 		
 		try {
@@ -92,7 +110,7 @@ public class SabaProgram extends Model{
 		return upcomingProgram;
 	}
 	
-	public static ArrayList<SabaProgram> fromJSONArray(JSONArray jsonArray){
+	public static ArrayList<SabaProgram> fromJSONArray(String programName, JSONArray jsonArray){
 		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
 		
 		for(int i=0; i<jsonArray.length(); i++){
@@ -104,7 +122,8 @@ public class SabaProgram extends Model{
 				continue;
 			}
 			
-			SabaProgram upcomingProgram = SabaProgram.fromJSON(programJson);
+			SabaProgram upcomingProgram = SabaProgram.fromProgramJSON(programJson);
+			upcomingProgram.setProgramName(programName);
 			
 			if(upcomingProgram != null){
 				Log.d("Program: ", upcomingProgram.toString());
@@ -115,6 +134,10 @@ public class SabaProgram extends Model{
 		return programs;
 	}
 	
+	public static ArrayList<SabaProgram> fromJSON(JSONObject completeJson){
+		return null;
+		
+	}
 	// Get all times.
     public static List<SabaProgram> getAll() {
         //return new Select().from(Tweet.class).orderBy("uid DESC").execute();

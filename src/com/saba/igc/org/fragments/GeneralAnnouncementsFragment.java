@@ -26,27 +26,23 @@ public class GeneralAnnouncementsFragment extends SabaBaseFragment {
 		mSabaClient.getGeneralAnnouncements(this);
 	}
 	
-	@Override
-	public void getJsonObject(String programName, JSONObject response) {
-		mProgramsProgressBar.setVisibility(View.GONE);
-		if(response == null){
-			// display error.
-			return;
-		}
-
-		try{
-			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
-			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(upcomingProgramsJson);
-			Log.d("TotalItems received: ", programs.size()+"");
-			addAll(programs);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	@Override
+//	public void getJsonObject(String programName, JSONObject response) {
+//		mProgramsProgressBar.setVisibility(View.GONE);
+//		if(response == null){
+//			// display error.
+//			return;
+//		}
+//
+//		try{
+//			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
+//			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(programName, upcomingProgramsJson);
+//			Log.d("TotalItems received: ", programs.size()+"");
+//			addAll(programs);
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
-	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
-	public void addAll(ArrayList<SabaProgram> programs){
-		mAdapter.addAll(programs);
-	}
 }

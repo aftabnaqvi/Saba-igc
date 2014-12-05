@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements SabaServerResponseListener
 
 		try{
 			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
-			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(upcomingProgramsJson);
+			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(programName, upcomingProgramsJson);
 			Log.d("TotalItems received: ", programs.size()+"");
 			addAll(programs);
 		} catch (JSONException e) {

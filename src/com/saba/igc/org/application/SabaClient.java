@@ -27,30 +27,33 @@ public class SabaClient {
 	}
 	
 	public void getUpcomingPrograms(final SabaServerResponseListener targert){
+		
+		// check the database, if lastUpdate was recent? 
 		// sheet # 2 is Upcoming programs
-		sendRequest(SABA_BASE_URL+2, targert);
+		sendRequest("Upcoming Programs", SABA_BASE_URL+2, targert);
  	}
 	
 	public void getWeeklyPrograms(final SabaServerResponseListener targert){
 		// sheet # 4 is Weekly Announcements
-		sendRequest(SABA_BASE_URL+4, targert);
+		sendRequest("Weekly Programs", SABA_BASE_URL+4, targert);
 
 	}
 	
 	public void getCommunityAnnouncements(final SabaServerResponseListener targert){
 		// sheet # 5 is Community Announcements
-		sendRequest(SABA_BASE_URL+5, targert);
+		sendRequest("Community Announcements", SABA_BASE_URL+5, targert);
 
 	}
 	
 	public void getGeneralAnnouncements(final SabaServerResponseListener targert){
 		// sheet # 6 is General Announcements
-		sendRequest(SABA_BASE_URL+6, targert);
+		sendRequest("General Announcements", SABA_BASE_URL+6, targert);
 	}
 	
-	private void sendRequest(final String url, final SabaServerResponseListener targert){
+	private void sendRequest(final String programName, final String url, final SabaServerResponseListener targert){
 		// create the network client
     	AsyncHttpClient client = new AsyncHttpClient();
+    	
     	client.setTimeout(mTimeout);
     	
     	// trigger the network request
@@ -63,13 +66,13 @@ public class SabaClient {
     			
     			Log.d("Request: ", throwable.toString());
     			// passing error back to caller.
-    			targert.getJsonObject(null, errorResponse);
+    			targert.getJsonObject(programName, errorResponse);
     		}
     		
     		@Override
     		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
     			// passing response to caller.
-				targert.getJsonObject(null, response);
+				targert.getJsonObject(programName, response);
     		}
     	});
 	}
