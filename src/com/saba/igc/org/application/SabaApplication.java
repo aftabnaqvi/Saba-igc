@@ -9,8 +9,14 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.saba.igc.org.models.PrayerTimes;
+import com.saba.igc.org.models.SabaDatabaseHelper;
 import com.saba.igc.org.models.SabaProgram;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class SabaApplication extends Application {
 	private static Context context;
 //
@@ -81,7 +87,7 @@ public class SabaApplication extends Application {
 		.build();
 		ImageLoader.getInstance().init(config);
 		
-		createDB();
+		//createDB();
 	}
 
 	@Override
@@ -90,10 +96,12 @@ public class SabaApplication extends Application {
         ActiveAndroid.dispose ();
     }
 	public static SabaClient getSabaClient() {
-		createDB();
 		return (SabaClient) SabaClient.getInstance(SabaApplication.context);
 	}
-	///Users/snaqvi/Documents/Android-Project-Test/Saba-igc/SanJose_IslamicCal_2009.txt
+	
 	private static void createDB(){
+		SabaDatabaseHelper sdh = new SabaDatabaseHelper(SabaApplication.context);
+		sdh.createDatabase();
+		
 	}
 }

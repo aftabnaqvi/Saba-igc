@@ -1,6 +1,7 @@
 package com.saba.igc.org.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +23,11 @@ import com.saba.igc.org.models.SabaProgram;
 
 import eu.erikw.PullToRefreshListView;
 
-
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class MainActivity extends Activity implements SabaServerResponseListener{
 
 	private SabaClient mSabaClient;
@@ -56,7 +61,7 @@ public class MainActivity extends Activity implements SabaServerResponseListener
 	}
 
 	@Override
-	public void getJsonObject(String programName, JSONObject response) {
+	public void processJsonObject(String programName, JSONObject response) {
 		mProgramsProgressBar.setVisibility(View.GONE);
 		if(response == null){
 			// display error.
@@ -78,5 +83,11 @@ public class MainActivity extends Activity implements SabaServerResponseListener
 		// 
 	public void addAll(ArrayList<SabaProgram> programs){
 		mAdapter.addAll(programs);
+	}
+
+	//@Override
+	public void processPrograms(String programName, List<SabaProgram> programs) {
+		// TODO Auto-generated method stub
+		
 	}
 }

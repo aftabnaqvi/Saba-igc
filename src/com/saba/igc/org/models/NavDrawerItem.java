@@ -1,5 +1,10 @@
 package com.saba.igc.org.models;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class NavDrawerItem {    
     private String mTitle;
     private int mIcon;

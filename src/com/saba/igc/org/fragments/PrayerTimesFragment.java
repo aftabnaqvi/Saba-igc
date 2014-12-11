@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import android.widget.TextView;
 import com.saba.igc.org.R;
 import com.saba.igc.org.models.PrayerTimes;
 
-public class PrayerTimesFragment extends SabaBaseFragment {
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
+public class PrayerTimesFragment extends Fragment{
 	
 	GridView gvPrayerTimes;
 	TextView tvDate;
-	
-	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,7 @@ public class PrayerTimesFragment extends SabaBaseFragment {
 		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
 		
-		View view = inflater.inflate(R.layout.fragment_prayer_times, container, false);
-//		gvPrayerTimes = (GridView) view.findViewById(R.id.gvPrayerTimes);
-//		gvPrayerTimes.setHorizontalSpacing(1);
-//		gvPrayerTimes.setVerticalSpacing(1);
-		
+		View view = inflater.inflate(R.layout.fragment_prayer_times, container, false);		
 		TextView tvCityName = (TextView) view.findViewById(R.id.tvCityName);
 		TextView tvTodayDate = (TextView) view.findViewById(R.id.tvTodayDate);
 		
@@ -53,7 +53,6 @@ public class PrayerTimesFragment extends SabaBaseFragment {
 	    int day = calendar.get(Calendar.DAY_OF_MONTH); //Day of the month :)
 	    int month = calendar.get(Calendar.MONTH); //number of seconds
 	    
-	    //tvDate.setText(calendar.toString());
 		List<PrayerTimes> items = PrayerTimes.getTodayPrayerTimes("San Jose", ""+month+"-"+day);
 		
 		if(tvCityName != null)

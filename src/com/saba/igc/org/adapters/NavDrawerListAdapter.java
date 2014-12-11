@@ -13,6 +13,11 @@ import android.widget.TextView;
 import com.saba.igc.org.R;
 import com.saba.igc.org.models.NavDrawerItem;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class NavDrawerListAdapter extends BaseAdapter{
 
 	private Context mContext;

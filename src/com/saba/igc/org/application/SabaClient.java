@@ -10,13 +10,37 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.saba.igc.org.activities.SabaServerResponseListener;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class SabaClient {
 	private static SabaClient sabaClient;
 	private static Context mContext;
-	
+//	private SabaServerResponseListener mTarget;
 	private static final String SABA_BASE_URL = "http://www.saba-igc.org/mobileapp/datafeedproxy.php?sheetName=weekly&sheetId=";
-	private static final int mTimeout = 30000;
+	private static final int TIME_OUT = 15000;
 	
+//	private class ReadFromDatabase extends AsyncTask<String, Void, List<SabaProgram> > {
+//		@Override
+//		protected List<SabaProgram> doInBackground(String... programName) {
+//	        return SabaProgram.getSabaPrograms(programName[0]);
+//	    }
+//
+//		@Override
+//	    protected void onPostExecute(List<SabaProgram> result) {
+//			if(result != null){
+//				System.out.println(result.get(0).getTitle());
+//				mTarget.getPrograms(null, result);
+//			}
+//	    }
+//	}
+//	
+	/**
+	 * @param context
+	 * @return
+	 */
 	public synchronized static SabaClient getInstance(Context context) {
 	   if(sabaClient == null) {
 		   mContext = context;
@@ -54,7 +78,7 @@ public class SabaClient {
 		// create the network client
     	AsyncHttpClient client = new AsyncHttpClient();
     	
-    	client.setTimeout(mTimeout);
+    	client.setTimeout(TIME_OUT);
     	
     	// trigger the network request
     	client.get(url, new JsonHttpResponseHandler(){
@@ -66,14 +90,20 @@ public class SabaClient {
     			
     			Log.d("Request: ", throwable.toString());
     			// passing error back to caller.
-    			targert.getJsonObject(programName, errorResponse);
+    			targert.processJsonObject(programName, errorResponse);
     		}
     		
     		@Override
     		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
     			// passing response to caller.
-				targert.getJsonObject(programName, response);
+				targert.processJsonObject(programName, response);
     		}
     	});
+	}
+
+	public void getCachedPrograms(String string, SabaServerResponseListener target) {
+
+		//mTarget = target;
+		//new ReadFromDatabase().execute(string);
 	}
 }

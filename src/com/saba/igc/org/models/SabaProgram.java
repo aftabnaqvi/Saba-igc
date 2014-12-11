@@ -1,6 +1,7 @@
 package com.saba.igc.org.models;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -12,6 +13,7 @@ import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 
@@ -35,12 +37,21 @@ import com.activeandroid.query.Select;
 //    }
 //}
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 @Table (name="SabaProgram")
 public class SabaProgram extends Model{
-	@Column(name = "lastUpdate")
+
+	// lastRequestedTime, last 
+	@Column(name = "lastUpdated")
 	private String mLastUpdated;
 	
-	// lastRequestedTime, last 
+	@Column(name = "updated")
+	private String mUpdated;
+	
 	@Column(name = "programName")
 	private String mProgramName;
 	
@@ -51,20 +62,28 @@ public class SabaProgram extends Model{
 	@Column(name = "content")
 	private String mContent;
 	
-	public String getUpdated() {
+	public String getLastUpdated() {
 		return mLastUpdated;
+	}
+	
+	public String getUpdated() {
+		return mUpdated;
 	}
 
 	public String getProgramName() {
 		return mProgramName;
 	}
-
-	public void setProgramName(String programName) {
-		this.mProgramName = programName;
-	}
-
+	
 	public String getTitle() {
 		return mTitle;
+	}
+	
+	public String  getContent() {
+		return mContent;
+	}
+	
+	public void setProgramName(String programName) {
+		this.mProgramName = programName;
 	}
 
 	public void setTitle(String title) {
@@ -76,29 +95,25 @@ public class SabaProgram extends Model{
 //		return mContent;
 //	}
 	
-	
-	public String  getContent() {
-		return mContent;
-	}
-	
 	public void setContent(String content) {
 		this.mContent = content;
 	}
 	
 	public String toString(){
-		return "LastUpdated: " + mLastUpdated + "\nProgramName" + mProgramName + "\nTitle: " + mTitle + "\nContent: " + mContent.toString();
+		return "LastUpdated: " + mLastUpdated + "\nUpdated: " + mUpdated + "\nProgramName" + mProgramName + "\nTitle: " + mTitle + "\nContent: " + mContent.toString();
 	}
 	
 	public static SabaProgram fromProgramJSON(JSONObject json){
 		SabaProgram upcomingProgram = new SabaProgram();
 		
 		try {
-			upcomingProgram.mLastUpdated = json.getString("updated");
+			upcomingProgram.mLastUpdated = new Date().toString();
+			upcomingProgram.mUpdated = json.getString("updated");
 			upcomingProgram.mTitle = json.getString("title");
 			//String content = json.getString("content");
 			//upcomingProgram.mContent = Content.contentFromString(content);
 			upcomingProgram.mContent = json.getString("content");
-			upcomingProgram.mContent = json.getString("content");
+			//upcomingProgram.mContent = json.getString("content");
 			//upcomingPrograms.mLink = json.getString("link");
 			
 			
@@ -138,18 +153,30 @@ public class SabaProgram extends Model{
 		return null;
 		
 	}
+	
+	// Persistence methods.
+    public void saveProgram(){
+    	this.save();
+    }
+    
+    public static void deleteSabaPrograms(String programName){
+    	new Delete()
+    	.from(SabaProgram.class)
+    	.where("programName = ?", programName)
+    	.execute();
+    }
+    
 	// Get all times.
     public static List<SabaProgram> getAll() {
-        //return new Select().from(Tweet.class).orderBy("uid DESC").execute();
         return new Select().from(SabaProgram.class).execute();
     }
     
     
-    // Get todays time. date format should be MM-DD only. we don't care about year here..
-    public static List<SabaProgram> getTodayPrayerTimes(String city, String today) {
+    // get recent SABA programs by given program name from the database.
+    public static List<SabaProgram> getSabaPrograms(String programName) {
         return new Select()
         .from(SabaProgram.class)
-        .where("city = ? AND date = ?", city, today)
+        .where("programName = ?", programName)
         .execute();
     }
 }

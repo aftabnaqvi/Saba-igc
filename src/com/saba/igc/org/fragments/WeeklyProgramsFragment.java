@@ -1,22 +1,16 @@
 package com.saba.igc.org.fragments;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.os.Bundle;
 
 import com.saba.igc.org.models.SabaProgram;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class WeeklyProgramsFragment extends SabaBaseFragment {
+	private final String PROGRAM_NAME = "WeeklyPrograms";
 	
 	public WeeklyProgramsFragment(){
 		
@@ -24,30 +18,12 @@ public class WeeklyProgramsFragment extends SabaBaseFragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		
-		mSabaClient.getWeeklyPrograms(this);
+		super.onCreate(savedInstanceState);		
+		// get programs from database. if program exists then display. otherwise make a network request.  
+		mPrograms =  SabaProgram.getSabaPrograms(PROGRAM_NAME);
+		if(mPrograms.size() == 0){
+			// make a network request to pull the data from server.
+			mSabaClient.getWeeklyPrograms(this);
+		} 
 	}
-	
-//	@Override
-//	public void getJsonObject(String programName, JSONObject response) {
-//		mProgramsProgressBar.setVisibility(View.GONE);
-//		if(response == null){
-//			// display error.
-//			return;
-//		}
-//
-//		try{
-//			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
-//			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(upcomingProgramsJson);
-//			Log.d("TotalItems received: ", programs.size()+"");
-//			addAll(programs);
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
 }

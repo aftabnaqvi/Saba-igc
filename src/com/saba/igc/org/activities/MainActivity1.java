@@ -20,6 +20,11 @@ import com.saba.igc.org.fragments.WeeklyProgramsFragment;
 import com.saba.igc.org.models.PrayerTimes;
 import com.saba.igc.org.navdrawer.FragmentNavigationDrawer;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class MainActivity1 extends FragmentActivity {
 	private FragmentNavigationDrawer dlDrawer;
 

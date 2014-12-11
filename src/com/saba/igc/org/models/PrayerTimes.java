@@ -1,17 +1,17 @@
 package com.saba.igc.org.models;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 @Table(name = "PrayerTimes")
 public class PrayerTimes extends Model {
 	//D-Month-Y	Day	Imsaak	Fajar		Sunrise	Zohar	Sunset	Maghrib/Iftar	Midnight

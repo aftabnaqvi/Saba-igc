@@ -8,6 +8,11 @@ import android.widget.ArrayAdapter;
 import com.saba.igc.org.R;
 import com.saba.igc.org.models.PrayerTimes;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class PrayerTimesAdapter extends ArrayAdapter<PrayerTimes> {
 
 	public PrayerTimesAdapter(Context context,

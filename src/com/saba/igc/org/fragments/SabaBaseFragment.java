@@ -1,6 +1,7 @@
 package com.saba.igc.org.fragments;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +27,16 @@ import com.saba.igc.org.models.SabaProgram;
 
 import eu.erikw.PullToRefreshListView;
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public abstract class SabaBaseFragment extends Fragment implements SabaServerResponseListener {
 
 	protected SabaClient mSabaClient;
 	protected ProgramsArrayAdapter mAdapter;
-	protected ArrayList<SabaProgram> mPrograms;
+	protected List<SabaProgram> mPrograms;
 	protected PullToRefreshListView mLvPrograms;
 	protected ProgressBar mProgramsProgressBar;	
 	private String mProgramName;
@@ -45,14 +51,18 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.activity_main, container, false);
 		
 		mProgramsProgressBar = (ProgressBar) view.findViewById(R.id.programsProgressBar);
         mLvPrograms = (PullToRefreshListView) view.findViewById(R.id.lvUpcomingPrograms);
         
-		mPrograms = new ArrayList<SabaProgram>();
+        if(mPrograms != null && mPrograms.size() == 0){
+        	mPrograms = new ArrayList<SabaProgram>();
+        } else {
+        	mProgramsProgressBar.setVisibility(View.GONE);
+        }
+        
 		mAdapter = new ProgramsArrayAdapter(getActivity(), mPrograms);
 		mLvPrograms.setAdapter(mAdapter);
 		
@@ -69,7 +79,7 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 	}
 	
 	@Override
-	public void getJsonObject(String programName, JSONObject response) {
+	public void processJsonObject(String programName, JSONObject response) {
 		mProgramsProgressBar.setVisibility(View.GONE);
 		if(response == null){
 			// display error.
@@ -77,9 +87,9 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		}
 
 		try{
-			mProgramName = programName;
+			mProgramName = response.getString("title");
 			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
-			ArrayList<SabaProgram> programs = SabaProgram.fromJSONArray(programName, upcomingProgramsJson);
+			List<SabaProgram> programs = SabaProgram.fromJSONArray(mProgramName, upcomingProgramsJson);
 			Log.d("TotalItems received: ", programs.size()+"");
 			addAll(programs);
 		} catch (JSONException e) {
@@ -88,9 +98,25 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		}
 	}
 
+//	public void processPrograms(String programName, List<SabaProgram> programs) {
+//		mProgramName = programName;
+//		mProgramsProgressBar.setVisibility(View.GONE);
+//		if(programs != null){
+//			mAdapter.addAll(programs);
+//		}
+//	}
+	
 	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
-	public void addAll(ArrayList<SabaProgram> programs){
+	public void addAll(List<SabaProgram> programs){
 		mAdapter.addAll(programs);
+		
+		// delete existing records. We don't want to keep duplicate entries. 
+		 SabaProgram.deleteSabaPrograms(mProgramName);
+		
+		// save new/latest programs.
+		for(final SabaProgram program : programs){
+			program.saveProgram();
+		}
 	}
 		
 	protected void setProgramName(String program){

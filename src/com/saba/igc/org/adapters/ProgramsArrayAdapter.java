@@ -41,6 +41,11 @@ class BitmapScaler
 	}
 }
 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 
 	public ProgramsArrayAdapter(Context context, List<SabaProgram> objects) {
@@ -52,7 +57,7 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 		private TextView	tvProgramTitle;
 		private TextView	tvProgramDescription;
 		private TextView	tvUpatedTime;
-		private ProgressBar	ivTweetImageProgressBar;
+		private ProgressBar	ivImageProgressBar;
 	}
 
 	@Override

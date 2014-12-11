@@ -24,6 +24,11 @@ import com.saba.igc.org.R;
 import com.saba.igc.org.adapters.NavDrawerListAdapter;
 import com.saba.igc.org.models.NavDrawerItem;
  
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class FragmentNavigationDrawer extends DrawerLayout {
 	private ActionBarDrawerToggle drawerToggle;
 	private ListView lvDrawer;

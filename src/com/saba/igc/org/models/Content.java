@@ -10,6 +10,11 @@ import android.util.Log;
 // imageheight: 60",
 
 // Content are comma separated. 
+/**
+ * @author Syed Aftab Naqvi
+ * @create December, 2014
+ * @version 1.0
+ */
 public class Content {
 	private String mDescription;
 	private String mImageUrl;
