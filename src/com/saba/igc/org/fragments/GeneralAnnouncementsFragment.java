@@ -10,7 +10,7 @@ import com.saba.igc.org.models.SabaProgram;
  * @version 1.0
  */
 public class GeneralAnnouncementsFragment extends SabaBaseFragment {
-	private final String PROGRAM_NAME = "GeneralAnnouncements";
+	private final String PROGRAM_NAME = "General Announcements";
 	
 	public GeneralAnnouncementsFragment(){
 	}

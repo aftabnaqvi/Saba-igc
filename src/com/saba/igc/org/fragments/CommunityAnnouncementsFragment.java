@@ -10,7 +10,7 @@ import com.saba.igc.org.models.SabaProgram;
  * @version 1.0
  */
 public class CommunityAnnouncementsFragment extends SabaBaseFragment {
-	private final String PROGRAM_NAME = "CommunityAnnouncements";
+	private final String PROGRAM_NAME = "Community Announcements";
 	
 	public CommunityAnnouncementsFragment(){
 	}

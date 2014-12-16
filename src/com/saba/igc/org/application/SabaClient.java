@@ -1,6 +1,8 @@
 package com.saba.igc.org.application;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -20,7 +22,7 @@ public class SabaClient {
 	private static Context mContext;
 //	private SabaServerResponseListener mTarget;
 	private static final String SABA_BASE_URL = "http://www.saba-igc.org/mobileapp/datafeedproxy.php?sheetName=weekly&sheetId=";
-	private static final int TIME_OUT = 15000;
+	private static final int TIME_OUT = 30000;
 	
 //	private class ReadFromDatabase extends AsyncTask<String, Void, List<SabaProgram> > {
 //		@Override
@@ -82,22 +84,76 @@ public class SabaClient {
     	
     	// trigger the network request
     	client.get(url, new JsonHttpResponseHandler(){
-    		@Override
-    		public void onFailure(int statusCode, Header[] headers,
-    				Throwable throwable, JSONObject errorResponse) {
-    			// TODO Auto-generated method stub
-    			super.onFailure(statusCode, headers, throwable, errorResponse);
-    			
-    			Log.d("Request: ", throwable.toString());
-    			// passing error back to caller.
-    			targert.processJsonObject(programName, errorResponse);
-    		}
-    		
-    		@Override
-    		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-    			// passing response to caller.
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					String responseString, Throwable throwable) {
+				// TODO Auto-generated method stub
+				super.onFailure(statusCode, headers, responseString, throwable);
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					Throwable throwable, JSONArray errorResponse) {
+				// TODO Auto-generated method stub
+				super.onFailure(statusCode, headers, throwable, errorResponse);
+			}
+
+			@Override
+			public void onFailure(int statusCode, Header[] headers,
+					Throwable throwable, JSONObject errorResponse) {
+				// TODO Auto-generated method stub
+				super.onFailure(statusCode, headers, throwable, errorResponse);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONArray response) {
+				// TODO Auto-generated method stub
+				
 				targert.processJsonObject(programName, response);
-    		}
+				
+				super.onSuccess(statusCode, headers, response);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					JSONObject response) {
+				// TODO Auto-generated method stub
+				super.onSuccess(statusCode, headers, response);
+			}
+
+			@Override
+			public void onSuccess(int statusCode, Header[] headers,
+					String responseString) {
+				// TODO Auto-generated method stub
+				super.onSuccess(statusCode, headers, responseString);
+			}
+
+			@Override
+			protected Object parseResponse(byte[] responseBody)
+					throws JSONException {
+				// TODO Auto-generated method stub
+				return super.parseResponse(responseBody);
+			}
+    		
+    		
+//    		@Override
+//    		public void onFailure(int statusCode, Header[] headers,
+//    				Throwable throwable, JSONObject errorResponse) {
+//    			// TODO Auto-generated method stub
+//    			super.onFailure(statusCode, headers, throwable, errorResponse);
+//    			
+//    			Log.d("Request: ", throwable.toString());
+//    			// passing error back to caller.
+//    			targert.processJsonObject(programName, errorResponse);
+//    		}
+//    		
+//    		@Override
+//    		public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//    			// passing response to caller.
+//				targert.processJsonObject(programName, response);
+//    		}
     	});
 	}
 

@@ -1,4 +1,5 @@
 package com.saba.igc.org.activities;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -8,4 +9,5 @@ import org.json.JSONObject;
  */
 public interface SabaServerResponseListener {
 	public void processJsonObject(String programName, JSONObject response);
+	public void processJsonObject(String programName, JSONArray response);
 }

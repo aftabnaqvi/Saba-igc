@@ -1,5 +1,7 @@
 package com.saba.igc.org.fragments;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -57,9 +59,13 @@ public class PrayerTimesFragment extends Fragment{
 		
 		if(tvCityName != null)
 			tvCityName.setText("San Jose");
-		
-		if(tvTodayDate != null)
-			tvTodayDate.setText(calendar.getTime().toGMTString());
+//		DateFormat dateInstance = SimpleDateFormat.getDateInstance(DateFormat.FULL);
+//		tvTodayDate.setText(dateInstance.format(Calendar.getInstance().getTime()));
+		if(tvTodayDate != null){
+			DateFormat dateInstance = SimpleDateFormat.getDateInstance(DateFormat.FULL);
+			tvTodayDate.setText(dateInstance.format(Calendar.getInstance().getTime()));
+			System.out.println(dateInstance.format(Calendar.getInstance().getTime()));
+		}
 		
 		if(tvImsaac != null)
 			tvImsaac.setText(items.get(0).getImsaak());

@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.saba.igc.org.R;
+import com.saba.igc.org.extras.EllipsizingTextView;
 import com.saba.igc.org.models.SabaProgram;
 
 class BitmapScaler
@@ -53,11 +54,11 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 	}
 	
 	public static class ViewHolder{
-		private ImageView	ivProgramImage;
-		private TextView	tvProgramTitle;
-		private TextView	tvProgramDescription;
-		private TextView	tvUpatedTime;
-		private ProgressBar	ivImageProgressBar;
+		private ImageView			ivProgramImage;
+		private TextView			tvProgramTitle;
+		private EllipsizingTextView	tvProgramDescription;
+		private TextView			tvUpatedTime;
+		private ProgressBar			ivImageProgressBar;
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 			convertView = LayoutInflater.from(getContext()).inflate(R.layout.upcoming_program_item, parent, false);
 			viewHolder.ivProgramImage = (ImageView)convertView.findViewById(R.id.ivProgram);
 			viewHolder.tvProgramTitle = (TextView)convertView.findViewById(R.id.tvProgramTitle);
-			viewHolder.tvProgramDescription = (TextView)convertView.findViewById(R.id.tvProgramDescription);
+			viewHolder.tvProgramDescription = (EllipsizingTextView)convertView.findViewById(R.id.tvProgramDescription);
 			
 //			viewHolder.tvUpatedTime = (TextView)convertView.findViewById(R.id.tvUpatedTime);
 //			viewHolder.ivTweetImageProgressBar = (ProgressBar)convertView.findViewById(R.id.imageProgressBar);
@@ -119,7 +120,7 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 		return convertView;
 	}
 	
-	private void updateTweetVew(ViewHolder viewHolder, SabaProgram program){
+	private void updateTweetVew(final ViewHolder viewHolder, SabaProgram program){
 		if(viewHolder == null || program == null){
 			Log.e("error", "Invalid Arguments");
 			return;
@@ -127,10 +128,12 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 	
 		if(viewHolder.ivProgramImage != null){
 			// loading user profile image via its URL into imageView directly.
-			//viewHolder.ivProgramImage.setImageResource(android.R.color.transparent);
+			viewHolder.ivProgramImage.setImageResource(android.R.color.transparent);
 			//ImageLoader imageLoader = ImageLoader.getInstance();
-			//imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), viewHolder.ivProfileImage);
-			//display(viewHolder.ivProfileImage, tweet.getUser().getProfileImageUrl(), null);
+			//imageLoader.displayImage(program.getImageUrl(), viewHolder.ivProgramImage);
+			if(program.getImageUrl() != null){
+				display(viewHolder.ivProgramImage, program.getImageUrl(), null);
+			}
 		}
 		
 		if(viewHolder.tvProgramTitle != null){
@@ -138,9 +141,24 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 		}
 		
 		if(viewHolder.tvProgramDescription != null){
-			Log.d("InAdapter: ", program.getContent());
-			viewHolder.tvProgramDescription.setText(Html.fromHtml(program.getContent()));
+			Log.d("InAdapter: ", program.getDescription());
+			viewHolder.tvProgramDescription.setText(Html.fromHtml(program.getDescription()));
 			viewHolder.tvProgramDescription.setMovementMethod(LinkMovementMethod.getInstance());
+			
+//			ViewTreeObserver vto = viewHolder.tvProgramDescription.getViewTreeObserver();
+//		    vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+//
+//		        @Override
+//		        public void onGlobalLayout() {
+//		        	ViewTreeObserver obs = viewHolder.tvProgramDescription.getViewTreeObserver();
+//		        	obs.removeGlobalOnLayoutListener(this);
+//		        	if(viewHolder.tvProgramDescription.getLineCount() > 3){
+//		        		int lineEndIndex = viewHolder.tvProgramDescription.getLayout().getLineEnd(2);
+//		        		String text = viewHolder.tvProgramDescription.getText().subSequence(0, lineEndIndex-3) +"...";
+//		        		viewHolder.tvProgramDescription.setText(text);
+//		        	}
+//		        }
+//		    });
 		}	
 	}
 	
@@ -165,25 +183,25 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 	        	if(spinner != null)
 	        		spinner.setVisibility(View.GONE); //  loading completed set the spinne m[p 8978 p 5p b84etttttttttyetw4r visibility to gone
 	        	
-	        	int width=0;
-	        	if( view.getWidth() == 0){
-	        		width = view.getMeasuredWidth();
-	        	}else{
-	        		width = view.getWidth();
-	        	}
-	        	if( width == 0){
-	        		width = loadedImage.getWidth();
-	        	}
+	        	int width=60;
+//	        	if( view.getWidth() == 0){
+//	        		width = view.getMeasuredWidth();
+//	        	}else{
+//	        		width = view.getWidth();
+//	        	}
+//	        	if( width == 0){
+//	        		width = loadedImage.getWidth();
+//	        	}
 	         
-	        	int height=0;
-	        	if( view.getHeight() == 0){
-	        		height = view.getMeasuredHeight();
-	        	}else{
-	        		height = view.getHeight();
-	        	}
-	        	if( height == 0 ){
-	        		height = loadedImage.getHeight();
-	        	}
+	        	int height=60;
+//	        	if( view.getHeight() == 0){
+//	        		height = view.getMeasuredHeight();
+//	        	}else{
+//	        		height = view.getHeight();
+//	        	}
+//	        	if( height == 0 ){
+//	        		height = loadedImage.getHeight();
+//	        	}
 	        	BitmapScaler.scaleToFitHeight(loadedImage, height);
 	        	BitmapScaler.scaleToFitWidth(loadedImage, width);
 	        }

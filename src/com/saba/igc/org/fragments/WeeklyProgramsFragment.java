@@ -10,7 +10,7 @@ import com.saba.igc.org.models.SabaProgram;
  * @version 1.0
  */
 public class WeeklyProgramsFragment extends SabaBaseFragment {
-	private final String PROGRAM_NAME = "WeeklyPrograms";
+	private final String PROGRAM_NAME = "Weekly Programs";
 	
 	public WeeklyProgramsFragment(){
 		
@@ -21,7 +21,8 @@ public class WeeklyProgramsFragment extends SabaBaseFragment {
 		super.onCreate(savedInstanceState);		
 		// get programs from database. if program exists then display. otherwise make a network request.  
 		mPrograms =  SabaProgram.getSabaPrograms(PROGRAM_NAME);
-		if(mPrograms.size() == 0){
+		//if(mPrograms.size() == 0)
+		{
 			// make a network request to pull the data from server.
 			mSabaClient.getWeeklyPrograms(this);
 		} 

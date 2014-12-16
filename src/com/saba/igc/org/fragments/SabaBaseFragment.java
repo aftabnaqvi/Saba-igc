@@ -88,8 +88,14 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 
 		try{
 			mProgramName = response.getString("title");
-			JSONArray upcomingProgramsJson = response.getJSONArray("entry");
-			List<SabaProgram> programs = SabaProgram.fromJSONArray(mProgramName, upcomingProgramsJson);
+			JSONArray ProgramsJson = response.getJSONArray("entry");
+			List<SabaProgram> programs = null;
+			if(mProgramName!=null && mProgramName.compareToIgnoreCase("WeeklyPrograms") == 0){
+				// parse weekly programs differently....
+				SabaProgram.weeklyProgramsFromJSONArray(mProgramName, ProgramsJson);
+			} else {
+				programs = SabaProgram.fromJSONArray(mProgramName, ProgramsJson);
+			}
 			Log.d("TotalItems received: ", programs.size()+"");
 			addAll(programs);
 		} catch (JSONException e) {
@@ -98,6 +104,26 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		}
 	}
 
+	public void processJsonObject(String programName, JSONArray response){
+		mProgramsProgressBar.setVisibility(View.GONE);
+		if(response == null){
+			// display error.
+			return;
+		}
+
+		mProgramName = programName;
+		List<SabaProgram> programs = null;
+		if(mProgramName!=null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
+			// parse weekly programs differently....
+			programs = SabaProgram.weeklyProgramsFromJSONArray(mProgramName, response);
+		} else {
+			programs = SabaProgram.fromJSONArray(mProgramName, response);
+		}
+		Log.d("TotalItems received: ", programs.size()+"");
+		addAll(programs);
+		
+	}
+	//private void getWeeklyPrograms
 //	public void processPrograms(String programName, List<SabaProgram> programs) {
 //		mProgramName = programName;
 //		mProgramsProgressBar.setVisibility(View.GONE);
