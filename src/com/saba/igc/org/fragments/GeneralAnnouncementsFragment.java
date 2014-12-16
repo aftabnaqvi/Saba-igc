@@ -26,4 +26,11 @@ public class GeneralAnnouncementsFragment extends SabaBaseFragment {
 			mSabaClient.getGeneralAnnouncements(this);
 		} 
 	}
+	
+	@Override
+	protected void populatePrograms() {
+		// TODO Auto-generated method stub
+		mAdapter.clear();
+		mSabaClient.getGeneralAnnouncements(this);
+	}
 }

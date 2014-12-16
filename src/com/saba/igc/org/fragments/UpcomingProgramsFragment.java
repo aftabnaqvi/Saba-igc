@@ -27,6 +27,14 @@ public class UpcomingProgramsFragment extends SabaBaseFragment {
 			mSabaClient.getUpcomingPrograms(this);
 		} 
 	}
+	
+	@Override
+	protected void populatePrograms() {
+		// TODO Auto-generated method stub
+		mAdapter.clear();
+		mSabaClient.getUpcomingPrograms(this);
+	}
+	
 }
 
 

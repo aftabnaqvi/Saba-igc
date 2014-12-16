@@ -205,8 +205,10 @@ public class SabaProgram extends Model{
 						continue;
 					}
 					weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
-					sb.append(weeklyProgram.getTime());
-					sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					if(!weeklyProgram.getTime().trim().isEmpty()){
+						sb.append(weeklyProgram.getTime());
+						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					}
 					sb.append(weeklyProgram.getProgram());
 					sb.append("<br>");
 				} while(jsonArray.length() > index && weeklyProgram.getDay().isEmpty());

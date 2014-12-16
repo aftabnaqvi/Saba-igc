@@ -26,4 +26,11 @@ public class CommunityAnnouncementsFragment extends SabaBaseFragment {
 			mSabaClient.getCommunityAnnouncements(this);
 		} 
 	}
+	
+	@Override
+	protected void populatePrograms() {
+		// TODO Auto-generated method stub
+		mAdapter.clear();
+		mSabaClient.getCommunityAnnouncements(this);
+	}
 }

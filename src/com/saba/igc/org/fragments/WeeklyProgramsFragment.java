@@ -21,10 +21,17 @@ public class WeeklyProgramsFragment extends SabaBaseFragment {
 		super.onCreate(savedInstanceState);		
 		// get programs from database. if program exists then display. otherwise make a network request.  
 		mPrograms =  SabaProgram.getSabaPrograms(PROGRAM_NAME);
-		//if(mPrograms.size() == 0)
+		if(mPrograms.size() == 0)
 		{
 			// make a network request to pull the data from server.
 			mSabaClient.getWeeklyPrograms(this);
 		} 
+	}
+	
+	@Override
+	protected void populatePrograms() {
+		// TODO Auto-generated method stub
+		mAdapter.clear();
+		mSabaClient.getWeeklyPrograms(this);
 	}
 }

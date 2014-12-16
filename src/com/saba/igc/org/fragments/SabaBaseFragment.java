@@ -26,6 +26,7 @@ import com.saba.igc.org.application.SabaClient;
 import com.saba.igc.org.models.SabaProgram;
 
 import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
 
 /**
  * @author Syed Aftab Naqvi
@@ -75,11 +76,22 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 			}
 		});
 		
+		mLvPrograms.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call listView.onRefreshComplete() when
+                // once the network request has completed successfully.
+            	populatePrograms();
+            }
+        });
+		
 		return view;
 	}
 	
 	@Override
 	public void processJsonObject(String programName, JSONObject response) {
+		mLvPrograms.onRefreshComplete();
 		mProgramsProgressBar.setVisibility(View.GONE);
 		if(response == null){
 			// display error.
@@ -89,7 +101,7 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		try{
 			mProgramName = response.getString("title");
 			JSONArray ProgramsJson = response.getJSONArray("entry");
-			List<SabaProgram> programs = null;
+			List<SabaProgram> programs = null;                                            
 			if(mProgramName!=null && mProgramName.compareToIgnoreCase("WeeklyPrograms") == 0){
 				// parse weekly programs differently....
 				SabaProgram.weeklyProgramsFromJSONArray(mProgramName, ProgramsJson);
@@ -106,6 +118,7 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 
 	public void processJsonObject(String programName, JSONArray response){
 		mProgramsProgressBar.setVisibility(View.GONE);
+		mLvPrograms.onRefreshComplete();
 		if(response == null){
 			// display error.
 			return;
@@ -123,14 +136,6 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		addAll(programs);
 		
 	}
-	//private void getWeeklyPrograms
-//	public void processPrograms(String programName, List<SabaProgram> programs) {
-//		mProgramName = programName;
-//		mProgramsProgressBar.setVisibility(View.GONE);
-//		if(programs != null){
-//			mAdapter.addAll(programs);
-//		}
-//	}
 	
 	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
 	public void addAll(List<SabaProgram> programs){
@@ -152,4 +157,7 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 	protected String getProgramName(){
 		return mProgramName;
 	}
+	
+	protected abstract void populatePrograms();
+
 }
