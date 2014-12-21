@@ -24,6 +24,7 @@ import com.saba.igc.org.adapters.ProgramsArrayAdapter;
 import com.saba.igc.org.application.SabaApplication;
 import com.saba.igc.org.application.SabaClient;
 import com.saba.igc.org.models.SabaProgram;
+import com.saba.igc.org.models.DailyProgram;
 
 import eu.erikw.PullToRefreshListView;
 import eu.erikw.PullToRefreshListView.OnRefreshListener;
@@ -40,7 +41,7 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 	protected List<SabaProgram> mPrograms;
 	protected PullToRefreshListView mLvPrograms;
 	protected ProgressBar mProgramsProgressBar;	
-	private String mProgramName;
+	protected String mProgramName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,8 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 			List<SabaProgram> programs = null;                                            
 			if(mProgramName!=null && mProgramName.compareToIgnoreCase("WeeklyPrograms") == 0){
 				// parse weekly programs differently....
-				SabaProgram.weeklyProgramsFromJSONArray(mProgramName, ProgramsJson);
+				List<List<DailyProgram>> weeklyPrograms = DailyProgram.fromJSONArray1(programName, ProgramsJson);
+				SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, weeklyPrograms);
 			} else {
 				programs = SabaProgram.fromJSONArray(mProgramName, ProgramsJson);
 			}
@@ -128,13 +130,14 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		List<SabaProgram> programs = null;
 		if(mProgramName!=null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
 			// parse weekly programs differently....
-			programs = SabaProgram.weeklyProgramsFromJSONArray(mProgramName, response);
+			// List<DailyProgram> weeklyPrograms = DailyProgram.fromJSONArray(programName, response);
+			List<List<DailyProgram>> weeklyPrograms = DailyProgram.fromJSONArray1(programName, response);
+			programs = SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, weeklyPrograms);
 		} else {
 			programs = SabaProgram.fromJSONArray(mProgramName, response);
 		}
 		Log.d("TotalItems received: ", programs.size()+"");
 		addAll(programs);
-		
 	}
 	
 	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
@@ -149,6 +152,17 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 			program.saveProgram();
 		}
 	}
+	
+	// delete old data from the WeeklyProgram table and then save all newly retrieved weekly Programs.
+	public void addAllWeeklyPrograms(List<List<DailyProgram>> programs){
+		// delete existing records. We don't want to keep duplicate entries. 
+		 DailyProgram.deletePrograms();
+		
+		// save new/latest programs.
+		//for(final DailyProgram program : programs){
+		//	program.saveProgram();
+		//}
+	}
 		
 	protected void setProgramName(String program){
 		mProgramName = program;
@@ -159,5 +173,4 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 	}
 	
 	protected abstract void populatePrograms();
-
 }

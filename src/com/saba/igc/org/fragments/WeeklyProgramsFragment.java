@@ -1,8 +1,15 @@
 package com.saba.igc.org.fragments;
 
+import java.util.List;
+
+import org.json.JSONArray;
+
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import com.saba.igc.org.models.SabaProgram;
+import com.saba.igc.org.models.DailyProgram;
 
 /**
  * @author Syed Aftab Naqvi
@@ -11,7 +18,7 @@ import com.saba.igc.org.models.SabaProgram;
  */
 public class WeeklyProgramsFragment extends SabaBaseFragment {
 	private final String PROGRAM_NAME = "Weekly Programs";
-	
+	private List<List<DailyProgram>> mWeeklyPrograms;
 	public WeeklyProgramsFragment(){
 		
 	}
@@ -34,4 +41,46 @@ public class WeeklyProgramsFragment extends SabaBaseFragment {
 		mAdapter.clear();
 		mSabaClient.getWeeklyPrograms(this);
 	}
+	
+	@Override
+	public void processJsonObject(String programName, JSONArray response){
+		mProgramsProgressBar.setVisibility(View.GONE);
+		mLvPrograms.onRefreshComplete();
+		if(response == null){
+			// display error.
+			return;
+		}
+
+		// clean comments and simplify the method and make sure this will be called only in case of 
+		// WeeklyPrograms, others will to the base class which is SabaBaseFragment.
+		
+		mProgramName = programName;
+		List<SabaProgram> programs = null;
+		//if(mProgramName!=null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
+			// parse weekly programs differently....
+			mWeeklyPrograms = DailyProgram.fromJSONArray1(programName, response);
+			programs = SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, mWeeklyPrograms);
+		//} 
+		
+//		else {
+//			programs = SabaProgram.fromJSONArray(mProgramName, response);
+//		}
+		Log.d("TotalItems received: ", programs.size()+"");
+		addAllWeeklyPrograms(mWeeklyPrograms);
+		addAll(programs);
+	}
+	
+	
+//	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
+//	public void addAllProgram(List<WeeklyProgram> programs){
+//		mAdapter.addAll(programs);
+//		
+//		// delete existing records. We don't want to keep duplicate entries. 
+//		 SabaProgram.deleteSabaPrograms(mProgramName);
+//		
+//		// save new/latest programs.
+//		for(final WeeklyProgram program : programs){
+//			program.saveProgram();
+//		}
+//	}
 }

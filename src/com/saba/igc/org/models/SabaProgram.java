@@ -160,7 +160,7 @@ public class SabaProgram extends Model{
 			upcomingProgram.setProgramName(programName);
 			
 			if(upcomingProgram != null){
-				Log.d("Program: ", upcomingProgram.toString());
+				//Log.d("Program: ", upcomingProgram.toString());
 				programs.add(upcomingProgram);
 			}
 		}
@@ -168,51 +168,60 @@ public class SabaProgram extends Model{
 		return programs;
 	}
 	
-	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, JSONArray jsonArray){
+	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray1(String programName, List<List<DailyProgram>> weeklyPrograms){
 		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
+		//ArrayList<WeeklyProgram> weeklyPrograms = WeeklyProgram.fromJSONArray(programName, weeklyPrograms);
 		
-		int index = 0;
-		int length = jsonArray.length();
+		int length = weeklyPrograms.size();
+		// Weekly programs are coming in in different way as compare to other programs. Every day we may have different sub-programs
+		// like time based. e.g. at 6:30 PM - Maghrib prayers, 7:00 PM Dua e kumael etc... and everday we might have different number 
+		//	of programs. e.g. on Ashora day, we have all day programs. on 21st Ramadan, all night programs from iftaar to sehri etc.
 		
-		JSONObject programJson = null;
-		try{
-			programJson = jsonArray.getJSONObject(index);
-		} catch(JSONException e){
-			e.printStackTrace();
-		}
-		
-		while(index < length){
+		// Outer loop is navigating for one whole day program. It might have many sub-programs   
+		for(int index=0; index < length; index++){
 			SabaProgram sabaProgram = new SabaProgram();
 			sabaProgram.setProgramName(programName);
 			
-			WeeklyProgram weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
-			
-			if(weeklyProgram != null){
+			List<DailyProgram> dailyPrograms = weeklyPrograms.get(index); 
+			if(dailyPrograms != null){
 				StringBuilder sb = new StringBuilder();
-				sb.append(weeklyProgram.getDay());
+				sb.append(dailyPrograms.get(index).getDay());
 				sb.append("/");
-				sb.append(weeklyProgram.getEnglishDate());
+				sb.append(dailyPrograms.get(index).getEnglishDate());
 				sb.append("/");
-				sb.append(weeklyProgram.getHijriDate());
+				sb.append(dailyPrograms.get(index).getHijriDate());
 				sabaProgram.mTitle = sb.toString();
-				sb.setLength(0);
-				do{
-					try{
-						index++;
-						programJson = jsonArray.getJSONObject(index);
-					} catch(JSONException e){
-						e.printStackTrace();
-						continue;
+				
+				
+				// Inner loop is navigating through sub-programs. 
+				// Formatting note: we can get the max number of lines from TextView and combined those lines 
+				// and make a block. we should ignore other lines.. 
+				
+				int maxLinesToShow = 0;  // currently, we are displaying ... after two lines. we can modify here 
+				// if we want to display after 3 lines.
+				StringBuilder description = new StringBuilder();
+				for(final DailyProgram program : dailyPrograms){
+					if(program != null /*&& maxLinesToShow < 4*/){
+						if(!program.getTime().trim().isEmpty())
+						{
+							description.append(program.getTime());
+							description.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+						}
+						
+						// make this <br> business better.. improve the code. :(
+						if(program.getProgram().startsWith("<br>")){
+							description.append(program.getProgram().replace("<br>", ""));
+							description.append("<br>");
+						} else if(!program.getProgram().isEmpty()){
+							description.append(program.getProgram());
+							description.append("<br>");
+						}
+						//
+						maxLinesToShow++;
 					}
-					weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
-					if(!weeklyProgram.getTime().trim().isEmpty()){
-						sb.append(weeklyProgram.getTime());
-						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-					}
-					sb.append(weeklyProgram.getProgram());
-					sb.append("<br>");
-				} while(jsonArray.length() > index && weeklyProgram.getDay().isEmpty());
-				sabaProgram.mDescription = sb.toString();
+				}
+
+				sabaProgram.mDescription = description.toString();
 				Log.d("Weekly - Program: ", sabaProgram.mDescription);
 				programs.add(sabaProgram);
 			}
@@ -220,6 +229,108 @@ public class SabaProgram extends Model{
 		
 		return programs;
 	}
+	
+//	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, List<DailyProgram> weeklyPrograms){
+//		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
+//		//ArrayList<WeeklyProgram> weeklyPrograms = WeeklyProgram.fromJSONArray(programName, weeklyPrograms);
+//		
+//		int length = weeklyPrograms.size();
+//		// Weekly programs are coming in in different way as compare to other programs. Every day we may have different sub-programs
+//		// like time based. e.g. at 6:30 PM - Maghrib prayers, 7:00 PM Dua e kumael etc... and everday we might have different number 
+//		//	of programs. e.g. on Ashora day, we have all day programs. on 21st Ramadan, all night programs from iftaar to sehri etc.
+//		
+//		// Outer loop is navigating for one whole day program. It might have many sub-programs   
+//		for(int index=0; index < length; index++){
+//			SabaProgram sabaProgram = new SabaProgram();
+//			sabaProgram.setProgramName(programName);
+//			
+//			if(weeklyPrograms.get(index) != null){
+//				StringBuilder sb = new StringBuilder();
+//				sb.append(weeklyPrograms.get(index).getDay());
+//				sb.append("/");
+//				sb.append(weeklyPrograms.get(index).getEnglishDate());
+//				sb.append("/");
+//				sb.append(weeklyPrograms.get(index).getHijriDate());
+//				sabaProgram.mTitle = sb.toString();
+//				sb.setLength(0);
+//				
+//				// Inner loop is navigating through sub-programs. 
+//				// Formatting note: we can get the max number of lines from TextView and combined those lines 
+//				// and make a block. we should ignore other lines.. 
+//				
+//				int maxLinesToShow = 0;  // currently, we are displaying ... after two lines. we can modify here 
+//				// if we want to display after 3 lines.
+//				while(index < length && weeklyPrograms.get(index).getDay().isEmpty() && maxLinesToShow < 3){
+//					if(!weeklyPrograms.get(index).getTime().trim().isEmpty()){
+//						sb.append(weeklyPrograms.get(index).getTime());
+//						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+//					}
+//					sb.append(weeklyPrograms.get(index).getProgram());
+//					sb.append("<br>");
+//					maxLinesToShow++;
+//				}
+//				
+//				sabaProgram.mDescription = sb.toString();
+//				Log.d("Weekly - Program: ", sabaProgram.mDescription);
+//				programs.add(sabaProgram);
+//			}
+//		}
+//		
+//		return programs;
+//	}
+	
+//	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, JSONArray jsonArray){
+//		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
+//		
+//		int index = 0;
+//		int length = jsonArray.length();
+//		
+//		JSONObject programJson = null;
+//		try{
+//			programJson = jsonArray.getJSONObject(index);
+//		} catch(JSONException e){
+//			e.printStackTrace();
+//		}
+//		
+//		while(index < length){
+//			SabaProgram sabaProgram = new SabaProgram();
+//			sabaProgram.setProgramName(programName);
+//			
+//			WeeklyProgram weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
+//			
+//			if(weeklyProgram != null){
+//				StringBuilder sb = new StringBuilder();
+//				sb.append(weeklyProgram.getDay());
+//				sb.append("/");
+//				sb.append(weeklyProgram.getEnglishDate());
+//				sb.append("/");
+//				sb.append(weeklyProgram.getHijriDate());
+//				sabaProgram.mTitle = sb.toString();
+//				sb.setLength(0);
+//				do{
+//					try{
+//						index++;
+//						programJson = jsonArray.getJSONObject(index);
+//					} catch(JSONException e){
+//						e.printStackTrace();
+//						continue;
+//					}
+//					weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
+//					if(!weeklyProgram.getTime().trim().isEmpty()){
+//						sb.append(weeklyProgram.getTime());
+//						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+//					}
+//					sb.append(weeklyProgram.getProgram());
+//					sb.append("<br>");
+//				} while(jsonArray.length() > index && weeklyProgram.getDay().isEmpty());
+//				sabaProgram.mDescription = sb.toString();
+//				Log.d("Weekly - Program: ", sabaProgram.mDescription);
+//				programs.add(sabaProgram);
+//			}
+//		}
+//		
+//		return programs;
+//	}
 	
 	public static ArrayList<SabaProgram> fromJSON(JSONObject completeJson){
 		return null;

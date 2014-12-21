@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.saba.igc.org.R;
 import com.saba.igc.org.extras.EllipsizingTextView;
 import com.saba.igc.org.models.SabaProgram;
+import com.saba.igc.org.models.DailyProgram;
 
 class BitmapScaler
 {
@@ -57,6 +58,7 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 		private ImageView			ivProgramImage;
 		private TextView			tvProgramTitle;
 		private EllipsizingTextView	tvProgramDescription;
+		//private TextView	tvProgramDescription;
 		private TextView			tvUpatedTime;
 		private ProgressBar			ivImageProgressBar;
 	}
@@ -73,6 +75,7 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 			viewHolder.ivProgramImage = (ImageView)convertView.findViewById(R.id.ivProgram);
 			viewHolder.tvProgramTitle = (TextView)convertView.findViewById(R.id.tvProgramTitle);
 			viewHolder.tvProgramDescription = (EllipsizingTextView)convertView.findViewById(R.id.tvProgramDescription);
+			//viewHolder.tvProgramDescription = (TextView)convertView.findViewById(R.id.tvProgramDescription);
 			
 //			viewHolder.tvUpatedTime = (TextView)convertView.findViewById(R.id.tvUpatedTime);
 //			viewHolder.ivTweetImageProgressBar = (ProgressBar)convertView.findViewById(R.id.imageProgressBar);
@@ -144,21 +147,6 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 			Log.d("InAdapter: ", program.getDescription());
 			viewHolder.tvProgramDescription.setText(Html.fromHtml(program.getDescription()));
 			viewHolder.tvProgramDescription.setMovementMethod(LinkMovementMethod.getInstance());
-			
-//			ViewTreeObserver vto = viewHolder.tvProgramDescription.getViewTreeObserver();
-//		    vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-//
-//		        @Override
-//		        public void onGlobalLayout() {
-//		        	ViewTreeObserver obs = viewHolder.tvProgramDescription.getViewTreeObserver();
-//		        	obs.removeGlobalOnLayoutListener(this);
-//		        	if(viewHolder.tvProgramDescription.getLineCount() > 3){
-//		        		int lineEndIndex = viewHolder.tvProgramDescription.getLayout().getLineEnd(2);
-//		        		String text = viewHolder.tvProgramDescription.getText().subSequence(0, lineEndIndex-3) +"...";
-//		        		viewHolder.tvProgramDescription.setText(text);
-//		        	}
-//		        }
-//		    });
 		}	
 	}
 	
@@ -212,3 +200,10 @@ public class ProgramsArrayAdapter extends ArrayAdapter<SabaProgram>{
 		});
 	}
 }
+
+// create a separate adapter for weekly programs:
+// don't inherit WeeklyFramgment from  SabaFragmentBase and directly inherit from Fragment. 
+// implement everything which we have in SabaFragmentBase in Weekly Fragment.
+// think, about 2nd approach and use weekly programs to format the data they we have for other Fragment and detials 
+// will show a frm the WeeklyModel.
+

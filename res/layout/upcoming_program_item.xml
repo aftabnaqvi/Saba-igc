@@ -13,14 +13,16 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_launcher" />
 
-    <com.saba.igc.org.extras.EllipsizingTextView
+    <!-- <TextView -->
+     <com.saba.igc.org.extras.EllipsizingTextView  
+    
         android:id="@+id/tvProgramDescription"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignLeft="@+id/tvProgramTitle"
         android:layout_alignRight="@+id/tvProgramTitle"
         android:layout_below="@+id/tvProgramTitle"
-        android:maxLines="2"
+        android:maxLines="3"
         android:text="@string/program_description" 
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"

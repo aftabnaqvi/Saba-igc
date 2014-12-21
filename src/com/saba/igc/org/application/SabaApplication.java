@@ -8,6 +8,7 @@ import com.activeandroid.Configuration;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.saba.igc.org.models.DailyProgram;
 import com.saba.igc.org.models.PrayerTimes;
 import com.saba.igc.org.models.SabaDatabaseHelper;
 import com.saba.igc.org.models.SabaProgram;
@@ -76,6 +77,7 @@ public class SabaApplication extends Application {
 	    Configuration.Builder config1 = new Configuration.Builder(this);
 	    config1.addModelClasses(PrayerTimes.class);
 	    config1.addModelClasses(SabaProgram.class);
+	    config1.addModelClasses(DailyProgram.class);
 	    ActiveAndroid.initialize(config1.create());
 	    
 	    

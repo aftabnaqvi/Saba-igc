@@ -50,6 +50,9 @@ public final class R {
         public static final int tvMidnightLabel=0x7f070015;
         public static final int tvMidnightValue=0x7f070016;
         public static final int tvProgramDescription=0x7f070021;
+        public static final int tvProgramDetail=0x7f070025;
+        public static final int tvProgramHeader=0x7f070023;
+        public static final int tvProgramTime=0x7f070024;
         public static final int tvProgramTitle=0x7f070022;
         public static final int tvSunriseLabel=0x7f07000b;
         public static final int tvSunriseValue=0x7f070011;
@@ -69,6 +72,8 @@ public final class R {
         public static final int prayer_times_fragment=0x7f030005;
         public static final int ptr_header=0x7f030006;
         public static final int upcoming_program_item=0x7f030007;
+        public static final int weekly_program_header=0x7f030008;
+        public static final int weekly_program_item=0x7f030009;
     }
     public static final class raw {
         public static final int gilroy_islamiccal_2009=0x7f040000;
@@ -97,6 +102,8 @@ public final class R {
         public static final int midnight_label=0x7f060011;
         public static final int midnight_value=0x7f06001a;
         public static final int program_description=0x7f060003;
+        public static final int program_detail=0x7f06001c;
+        public static final int program_time=0x7f06001b;
         public static final int program_title=0x7f060002;
         public static final int ptr_last_updated=0x7f060007;
         public static final int ptr_pull_to_refresh=0x7f060004;
@@ -107,6 +114,7 @@ public final class R {
         public static final int sunset_label=0x7f06000f;
         public static final int sunset_value=0x7f060018;
         public static final int today_date=0x7f060013;
+        public static final int weekly_program_header=0x7f06001d;
         public static final int zohar_label=0x7f06000e;
         public static final int zohar_value=0x7f060017;
     }
