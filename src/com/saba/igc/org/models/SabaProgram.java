@@ -197,28 +197,24 @@ public class SabaProgram extends Model{
 				// Formatting note: we can get the max number of lines from TextView and combined those lines 
 				// and make a block. we should ignore other lines.. 
 				
-				int maxLinesToShow = 0;  // currently, we are displaying ... after two lines. we can modify here 
+				//int maxLinesToShow = 0;  // currently, we are displaying ... after two lines. we can modify here 
 				// if we want to display after 3 lines.
 				StringBuilder description = new StringBuilder();
 				for(final DailyProgram program : dailyPrograms){
-					if(program != null /*&& maxLinesToShow < 4*/){
-						if(!program.getTime().trim().isEmpty())
-						{
-							description.append(program.getTime());
-							description.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-						}
-						
-						// make this <br> business better.. improve the code. :(
-						if(program.getProgram().startsWith("<br>")){
-							description.append(program.getProgram().replace("<br>", ""));
-							description.append("<br>");
-						} else if(!program.getProgram().isEmpty()){
-							description.append(program.getProgram());
-							description.append("<br>");
-						}
-						//
-						maxLinesToShow++;
+					if(program != null && !program.getTime().trim().isEmpty() ){
+						description.append(program.getTime());
+						description.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 					}
+						
+					// make this <br> business better.. improve the code. :(	
+					if(program.getProgram().startsWith("<br>")){
+						description.append(program.getProgram().replace("<br>", ""));
+						description.append("<br>");
+					} else if(!program.getProgram().isEmpty()){
+						description.append(program.getProgram());
+						description.append("<br>");
+					}
+					//maxLinesToShow++;
 				}
 
 				sabaProgram.mDescription = description.toString();
