@@ -36,7 +36,7 @@ public class DailyProgram extends Model {
 	@Column(name = "englishDate")
 	private String mEnglishDate;
 	
-	@Column(name = "hijiriDate")
+	@Column(name = "hijriDate")
 	private String mHijriDate;
 	
 	@Column(name = "time")
@@ -167,7 +167,6 @@ public class DailyProgram extends Model {
 				continue;
 			}
 			
-			
 			DailyProgram weeklyProgram = DailyProgram.fromProgramJSON(programJson);
 			if(!weeklyProgram.getDay().isEmpty()){
 				dailyPrograms = new ArrayList<DailyProgram>();
@@ -202,7 +201,7 @@ public class DailyProgram extends Model {
     
     public static void deletePrograms(){
     	new Delete()
-    	.from(SabaProgram.class)
+    	.from(DailyProgram.class)
     	.execute();
     }
     

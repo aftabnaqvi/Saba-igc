@@ -21,7 +21,7 @@ public class GeneralAnnouncementsFragment extends SabaBaseFragment {
 		
 		// get programs from database. if program exists then display. otherwise make a network request.  
 		mPrograms =  SabaProgram.getSabaPrograms(PROGRAM_NAME);
-		if(mPrograms.size() == 0){
+		if(mPrograms != null && mPrograms.size() == 0){
 			// make a network request to pull the data from server.
 			mSabaClient.getGeneralAnnouncements(this);
 		} 

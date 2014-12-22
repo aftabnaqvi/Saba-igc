@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.saba.igc.org.models.SabaProgram;
 import com.saba.igc.org.models.DailyProgram;
+import com.saba.igc.org.models.SabaProgram;
 
 /**
  * @author Syed Aftab Naqvi
@@ -56,31 +56,11 @@ public class WeeklyProgramsFragment extends SabaBaseFragment {
 		
 		mProgramName = programName;
 		List<SabaProgram> programs = null;
-		//if(mProgramName!=null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
-			// parse weekly programs differently....
-			mWeeklyPrograms = DailyProgram.fromJSONArray1(programName, response);
-			programs = SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, mWeeklyPrograms);
-		//} 
-		
-//		else {
-//			programs = SabaProgram.fromJSONArray(mProgramName, response);
-//		}
+		// parse weekly programs differently....
+		mWeeklyPrograms = DailyProgram.fromJSONArray1(programName, response);
+		programs = SabaProgram.weeklyProgramsFromJSONArray(mProgramName, mWeeklyPrograms);
 		Log.d("TotalItems received: ", programs.size()+"");
 		addAllWeeklyPrograms(mWeeklyPrograms);
 		addAll(programs);
 	}
-	
-	
-//	// Delegate the adding to the internal adapter. // most recommended approach... minimize the code... 
-//	public void addAllProgram(List<WeeklyProgram> programs){
-//		mAdapter.addAll(programs);
-//		
-//		// delete existing records. We don't want to keep duplicate entries. 
-//		 SabaProgram.deleteSabaPrograms(mProgramName);
-//		
-//		// save new/latest programs.
-//		for(final WeeklyProgram program : programs){
-//			program.saveProgram();
-//		}
-//	}
 }

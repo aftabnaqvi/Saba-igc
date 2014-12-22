@@ -119,7 +119,7 @@ public class SabaProgram extends Model{
 	}
 	
 	public String toString(){
-		return "LastUpdated: " + mLastUpdated + "\nImageUrl: " + mImageUrl + "\nProgramName" + mProgramName + "\nTitle: " + mTitle + "\nDescription: " + mDescription;
+		return "LastUpdated: " + mLastUpdated + "\nImageUrl: " + mImageUrl + "\nProgramName: " + mProgramName + "\nTitle: " + mTitle + "\nDescription: " + mDescription;
 	}
 	
 	public static SabaProgram fromProgramJSON(JSONObject json){
@@ -168,7 +168,7 @@ public class SabaProgram extends Model{
 		return programs;
 	}
 	
-	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray1(String programName, List<List<DailyProgram>> weeklyPrograms){
+	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, List<List<DailyProgram>> weeklyPrograms){
 		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
 		//ArrayList<WeeklyProgram> weeklyPrograms = WeeklyProgram.fromJSONArray(programName, weeklyPrograms);
 		
@@ -191,7 +191,6 @@ public class SabaProgram extends Model{
 				sb.append("/");
 				sb.append(dailyPrograms.get(index).getHijriDate());
 				sabaProgram.mTitle = sb.toString();
-				
 				
 				// Inner loop is navigating through sub-programs. 
 				// Formatting note: we can get the max number of lines from TextView and combined those lines 
@@ -222,111 +221,8 @@ public class SabaProgram extends Model{
 				programs.add(sabaProgram);
 			}
 		}
-		
 		return programs;
 	}
-	
-//	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, List<DailyProgram> weeklyPrograms){
-//		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
-//		//ArrayList<WeeklyProgram> weeklyPrograms = WeeklyProgram.fromJSONArray(programName, weeklyPrograms);
-//		
-//		int length = weeklyPrograms.size();
-//		// Weekly programs are coming in in different way as compare to other programs. Every day we may have different sub-programs
-//		// like time based. e.g. at 6:30 PM - Maghrib prayers, 7:00 PM Dua e kumael etc... and everday we might have different number 
-//		//	of programs. e.g. on Ashora day, we have all day programs. on 21st Ramadan, all night programs from iftaar to sehri etc.
-//		
-//		// Outer loop is navigating for one whole day program. It might have many sub-programs   
-//		for(int index=0; index < length; index++){
-//			SabaProgram sabaProgram = new SabaProgram();
-//			sabaProgram.setProgramName(programName);
-//			
-//			if(weeklyPrograms.get(index) != null){
-//				StringBuilder sb = new StringBuilder();
-//				sb.append(weeklyPrograms.get(index).getDay());
-//				sb.append("/");
-//				sb.append(weeklyPrograms.get(index).getEnglishDate());
-//				sb.append("/");
-//				sb.append(weeklyPrograms.get(index).getHijriDate());
-//				sabaProgram.mTitle = sb.toString();
-//				sb.setLength(0);
-//				
-//				// Inner loop is navigating through sub-programs. 
-//				// Formatting note: we can get the max number of lines from TextView and combined those lines 
-//				// and make a block. we should ignore other lines.. 
-//				
-//				int maxLinesToShow = 0;  // currently, we are displaying ... after two lines. we can modify here 
-//				// if we want to display after 3 lines.
-//				while(index < length && weeklyPrograms.get(index).getDay().isEmpty() && maxLinesToShow < 3){
-//					if(!weeklyPrograms.get(index).getTime().trim().isEmpty()){
-//						sb.append(weeklyPrograms.get(index).getTime());
-//						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-//					}
-//					sb.append(weeklyPrograms.get(index).getProgram());
-//					sb.append("<br>");
-//					maxLinesToShow++;
-//				}
-//				
-//				sabaProgram.mDescription = sb.toString();
-//				Log.d("Weekly - Program: ", sabaProgram.mDescription);
-//				programs.add(sabaProgram);
-//			}
-//		}
-//		
-//		return programs;
-//	}
-	
-//	public static ArrayList<SabaProgram> weeklyProgramsFromJSONArray(String programName, JSONArray jsonArray){
-//		ArrayList<SabaProgram> programs = new ArrayList<SabaProgram>();
-//		
-//		int index = 0;
-//		int length = jsonArray.length();
-//		
-//		JSONObject programJson = null;
-//		try{
-//			programJson = jsonArray.getJSONObject(index);
-//		} catch(JSONException e){
-//			e.printStackTrace();
-//		}
-//		
-//		while(index < length){
-//			SabaProgram sabaProgram = new SabaProgram();
-//			sabaProgram.setProgramName(programName);
-//			
-//			WeeklyProgram weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
-//			
-//			if(weeklyProgram != null){
-//				StringBuilder sb = new StringBuilder();
-//				sb.append(weeklyProgram.getDay());
-//				sb.append("/");
-//				sb.append(weeklyProgram.getEnglishDate());
-//				sb.append("/");
-//				sb.append(weeklyProgram.getHijriDate());
-//				sabaProgram.mTitle = sb.toString();
-//				sb.setLength(0);
-//				do{
-//					try{
-//						index++;
-//						programJson = jsonArray.getJSONObject(index);
-//					} catch(JSONException e){
-//						e.printStackTrace();
-//						continue;
-//					}
-//					weeklyProgram = WeeklyProgram.fromProgramJSON(programJson);
-//					if(!weeklyProgram.getTime().trim().isEmpty()){
-//						sb.append(weeklyProgram.getTime());
-//						sb.append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-//					}
-//					sb.append(weeklyProgram.getProgram());
-//					sb.append("<br>");
-//				} while(jsonArray.length() > index && weeklyProgram.getDay().isEmpty());
-//				sabaProgram.mDescription = sb.toString();
-//				Log.d("Weekly - Program: ", sabaProgram.mDescription);
-//				programs.add(sabaProgram);
-//			}
-//		}
-//		
-//		return programs;
-//	}
 	
 	public static ArrayList<SabaProgram> fromJSON(JSONObject completeJson){
 		return null;
@@ -350,15 +246,12 @@ public class SabaProgram extends Model{
         return new Select().from(SabaProgram.class).execute();
     }
     
-    
     // get recent SABA programs by given program name from the database.
     public static List<SabaProgram> getSabaPrograms(String programName) {
         return new Select()
         .from(SabaProgram.class)
         .where("programName = ?", programName)
         .execute();
-        
-        
         // where lastUpdate = "today"
     }
 }

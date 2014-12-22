@@ -103,10 +103,10 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 			mProgramName = response.getString("title");
 			JSONArray ProgramsJson = response.getJSONArray("entry");
 			List<SabaProgram> programs = null;                                            
-			if(mProgramName!=null && mProgramName.compareToIgnoreCase("WeeklyPrograms") == 0){
+			if(mProgramName != null && mProgramName.compareToIgnoreCase("WeeklyPrograms") == 0){
 				// parse weekly programs differently....
 				List<List<DailyProgram>> weeklyPrograms = DailyProgram.fromJSONArray1(programName, ProgramsJson);
-				SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, weeklyPrograms);
+				SabaProgram.weeklyProgramsFromJSONArray(mProgramName, weeklyPrograms);
 			} else {
 				programs = SabaProgram.fromJSONArray(mProgramName, ProgramsJson);
 			}
@@ -128,11 +128,10 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 
 		mProgramName = programName;
 		List<SabaProgram> programs = null;
-		if(mProgramName!=null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
+		if(mProgramName != null && mProgramName.compareToIgnoreCase("Weekly Programs") == 0){
 			// parse weekly programs differently....
-			// List<DailyProgram> weeklyPrograms = DailyProgram.fromJSONArray(programName, response);
 			List<List<DailyProgram>> weeklyPrograms = DailyProgram.fromJSONArray1(programName, response);
-			programs = SabaProgram.weeklyProgramsFromJSONArray1(mProgramName, weeklyPrograms);
+			programs = SabaProgram.weeklyProgramsFromJSONArray(mProgramName, weeklyPrograms);
 		} else {
 			programs = SabaProgram.fromJSONArray(mProgramName, response);
 		}
@@ -159,9 +158,12 @@ public abstract class SabaBaseFragment extends Fragment implements SabaServerRes
 		 DailyProgram.deletePrograms();
 		
 		// save new/latest programs.
-		//for(final DailyProgram program : programs){
-		//	program.saveProgram();
-		//}
+		for(final List<DailyProgram> dailyPrograms : programs){
+			for(final DailyProgram program : dailyPrograms){
+				program.saveProgram();
+			}
+			
+		}
 	}
 		
 	protected void setProgramName(String program){
